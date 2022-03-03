@@ -21,5 +21,49 @@
         />
       </div>
     </div>
+    <div *ngIf="step == 2" formControlName="skills">
+      <h4>skills</h4>
+      <div>
+        <label for="skills">skills</label>
+        <input
+          type="text"
+          formControlName="skills"
+          id="skills"
+          placeholder="skills"
+        />
+      </div>
+    </div>
+
+    <div *ngIf="step == 3" formControlName="skills">
+      <h4>work preference</h4>
+      <div>
+        <label for="work_preference">work preference</label>
+        <input
+          type="text"
+          formControlName="work_preference"
+          id="work_preference"
+          placeholder="work preference"
+        />
+      </div>
+      <h4>had covid</h4>
+      <div>
+        <label for="work_preference">had covid</label>
+        <input
+          type="text"
+          formControlName="had_covid"
+          id="had_covid"
+          placeholder="had covid"
+        />
+      </div>
+    </div>
+
+    <kendo-stepper
+      #stepper
+      [steps]="steps"
+      stepType="full"
+      [(currentStep)]="currentStep"
+    >
+    </kendo-stepper>
+    <pre>{{ multiForm.value | json }}</pre>
   </form>
 </div>

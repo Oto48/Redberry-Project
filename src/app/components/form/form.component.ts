@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { StepperComponent } from '@progress/kendo-angular-layout';
 
 @Component({
   selector: 'app-form',
@@ -8,6 +9,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class FormComponent implements OnInit {
   public currentStep = 0;
+  public stepper: StepperComponent;
+  public steps = [{}, {}, {}];
   step: number = 1;
   multiForm = new FormGroup({
     userDetails: new FormGroup({
@@ -15,6 +18,9 @@ export class FormComponent implements OnInit {
       last_name: new FormControl(''),
       phone: new FormControl(''),
     }),
+    skills: new FormControl(),
+    work_preference: new FormControl(),
+    had_covid: new FormControl(),
   });
 
   constructor() {}
