@@ -1,6 +1,14 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  ControlContainer,
+  FormArray,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { StepperComponent } from '@progress/kendo-angular-layout';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-form',
@@ -10,28 +18,120 @@ import { StepperComponent } from '@progress/kendo-angular-layout';
 export class FormComponent implements OnInit {
   public currentStep = 0;
   public stepper: StepperComponent;
-  public steps = [{}, {}, {}];
+  public steps = [{}, {}, {}, {}, {}];
   step: number = 1;
+  skills: any;
+  testData = {
+    token: '287c76fe-7c10-4706-92ef-cd6618db20d9',
+    first_name: 'gela',
+    last_name: 'gelashvili',
+    email: 'gelashvili@gela.ge',
+    phone: '+995591933382',
+    skills: [
+      {
+        id: 1,
+        experience: 3,
+      },
+    ],
+    work_preference: 'from_home',
+    had_covid: true,
+    had_covid_at: '2022-02-23',
+    vaccinated: true,
+    vaccinated_at: '2022-02-23',
+    will_organize_devtalk: true,
+    devtalk_topic: 'I would ...',
+    something_special: 'I am special!',
+  };
   multiForm = new FormGroup({
-    userDetails: new FormGroup({
-      first_name: new FormControl('', Validators.required),
-      last_name: new FormControl(''),
-      phone: new FormControl(''),
-    }),
-    skills: new FormControl(),
-    work_preference: new FormControl(),
-    had_covid: new FormControl(),
+    first_name: new FormControl('', Validators.required),
+    last_name: new FormControl(''),
+    email: new FormControl(''),
+    phone: new FormControl(''),
+    skills: new FormArray([]),
+    work_preference: new FormControl(''),
+    had_covid: new FormControl(''),
+    vaccinated: new FormControl(''),
+    will_organize_devtalk: new FormControl(''),
+    devtalk_topic: new FormControl(''),
+    something_special: new FormControl(''),
   });
 
-  constructor() {}
+  skillsForm = new FormGroup({
+    id: new FormControl(),
+    experience: new FormControl(),
+  });
 
-  ngOnInit(): void {}
+  constructor(private api: ApiService) {}
 
+  ngOnInit(): void {
+    this.api.getSkillsalData().subscribe((data) => {
+      console.log(data);
+      this.skills = data;
+    });
+    this.api.getApplications().subscribe((data) => {
+      console.log(data);
+    });
+  }
+
+  previous() {
+    this.step = this.step - 1;
+    this.currentStep -= 1;
+  }
   next() {
     this.currentStep += 1;
-    if (this.multiForm.controls['userDetails'].invalid && this.step == 1) {
-      return;
-    }
     this.step = this.step + 1;
+  }
+
+  post() {
+    const data = this.multiForm.value;
+    data.token = '287c76fe-7c10-4706-92ef-cd6618db20d9';
+    console.log(data);
+    console.log(this.testData);
+    this.api.postApplications(data).subscribe(
+      (data) => {
+        console.log(data);
+      },
+      (error: any) => console.log(error)
+    );
+  }
+
+  addSkillFormGroup(): FormGroup {
+    let skills = new FormGroup({
+      id: new FormControl(this.skillsForm.value.id),
+      experience: new FormControl(this.skillsForm.value.experience),
+    });
+    return skills;
+  }
+
+  addSkillButton() {
+    (<FormArray>this.multiForm.get('skills')).push(this.addSkillFormGroup());
+  }
+
+  addCovidDate() {
+    if (!this.multiForm.get('had_covid_at')) {
+      this.multiForm.addControl(
+        'had_covid_at',
+        new FormControl('', [Validators.required])
+      );
+    }
+  }
+
+  removeCovidDate() {
+    if (this.multiForm.get('had_covid_at')) {
+      this.multiForm.removeControl('had_covid_at');
+    }
+  }
+
+  addVaccineDate() {
+    if (!this.multiForm.get('vaccinated_at')) {
+      this.multiForm.addControl(
+        'vaccinated_at',
+        new FormControl('', [Validators.required])
+      );
+    }
+  }
+
+  removeVaccineDate() {
+    this.multiForm.removeControl('vaccinated_at');
   }
 }
