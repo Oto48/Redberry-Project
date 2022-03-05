@@ -11,9 +11,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormDescriptionComponent } from './components/form/form-description/form-description.component';
 import { HomeComponent } from './components/home/home.component';
 import { SubmittedApplicationsComponent } from './components/submitted-applications/submitted-applications.component';
+import { SubmitComponent } from './components/form/submit/submit.component';
 
 @NgModule({
-  declarations: [AppComponent, FormComponent, FormDescriptionComponent, HomeComponent, SubmittedApplicationsComponent],
+  declarations: [AppComponent, FormComponent, FormDescriptionComponent, HomeComponent, SubmittedApplicationsComponent, SubmitComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

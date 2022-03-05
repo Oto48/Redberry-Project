@@ -7,6 +7,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { StepperComponent } from '@progress/kendo-angular-layout';
 import { ApiService } from 'src/app/services/api.service';
 
@@ -16,9 +17,9 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./form.component.scss'],
 })
 export class FormComponent implements OnInit {
-  public currentStep = 0;
-  public stepper: StepperComponent;
-  public steps = [{}, {}, {}, {}, {}];
+  currentStep = 0;
+  stepper: StepperComponent;
+  steps = [{}, {}, {}, {}, {}];
   step: number = 1;
   skills: any;
   testData = {
@@ -61,7 +62,7 @@ export class FormComponent implements OnInit {
     experience: new FormControl(),
   });
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, private router: Router) {}
 
   ngOnInit(): void {
     this.api.getSkillsalData().subscribe((data) => {
@@ -74,8 +75,12 @@ export class FormComponent implements OnInit {
   }
 
   previous() {
-    this.step = this.step - 1;
-    this.currentStep -= 1;
+    if (this.step === 1) {
+      this.router.navigate(['home']);
+    } else {
+      this.step = this.step - 1;
+      this.currentStep -= 1;
+    }
   }
   next() {
     this.currentStep += 1;
