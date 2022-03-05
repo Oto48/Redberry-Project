@@ -172,14 +172,14 @@
       </kendo-stepper>
       <button form="multiForm" (click)="next()">Next</button>
     </div>
-    <div *ngIf="step == 5">
-      <button (click)="post()">Submit</button>
-      <button (click)="previous()">go back</button>
-    </div>
     <pre>{{ multiForm.value | json }}</pre>
     <pre>{{ skillsForm.value | json }}</pre>
   </form>
-  <div class="text-container">
+  <div class="text-container" *ngIf="step < 5">
     <app-form-description [item]="currentStep"></app-form-description>
+  </div>
+  <div *ngIf="step == 5">
+    <button (click)="post()">Submit</button>
+    <button (click)="previous()">go back</button>
   </div>
 </div>
