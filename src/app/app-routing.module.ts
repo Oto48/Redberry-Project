@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FormComponent } from './components/form/form.component';
+import { SubmitComponent } from './components/form/submit/submit.component';
 import { HomeComponent } from './components/home/home.component';
 import { SubmittedApplicationsComponent } from './components/submitted-applications/submitted-applications.component';
+import { SubmitGuard } from './guard/submit.guard';
 
 const routes: Routes = [
   {
@@ -17,6 +19,11 @@ const routes: Routes = [
   {
     path: 'form',
     component: FormComponent,
+  },
+  {
+    path: 'submit',
+    component: SubmitComponent,
+    canActivate: [SubmitGuard],
   },
   {
     path: 'applications',

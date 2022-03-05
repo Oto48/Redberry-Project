@@ -10,6 +10,7 @@ import {
 import { Router } from '@angular/router';
 import { StepperComponent } from '@progress/kendo-angular-layout';
 import { ApiService } from 'src/app/services/api.service';
+import { SubmitGuardService } from 'src/app/services/submit-guard.service';
 
 @Component({
   selector: 'app-form',
@@ -62,7 +63,11 @@ export class FormComponent implements OnInit {
     experience: new FormControl(),
   });
 
-  constructor(private api: ApiService, private router: Router) {}
+  constructor(
+    private api: ApiService,
+    private router: Router,
+    private guard: SubmitGuardService
+  ) {}
 
   ngOnInit(): void {
     this.api.getSkillsalData().subscribe((data) => {
@@ -90,6 +95,7 @@ export class FormComponent implements OnInit {
   post() {
     const data = this.multiForm.value;
     data.token = '287c76fe-7c10-4706-92ef-cd6618db20d9';
+    this.guard.setEnterStatus(true);
     console.log(data);
     console.log(this.testData);
     this.api.postApplications(data).subscribe(
@@ -98,6 +104,7 @@ export class FormComponent implements OnInit {
       },
       (error: any) => console.log(error)
     );
+    this.router.navigate(['submit']);
   }
 
   addSkillFormGroup(): FormGroup {
