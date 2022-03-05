@@ -1,5 +1,5 @@
-<div class="form-container">
-  <form [formGroup]="multiForm" id="multiForm">
+<div class="main-container">
+  <form [formGroup]="multiForm" id="multiForm" class="form-container">
     <div *ngIf="step == 1">
       <h4>User Details</h4>
       <div>
@@ -171,7 +171,6 @@
       >
       </kendo-stepper>
       <button form="multiForm" (click)="next()">Next</button>
-      <!-- <button (click)="post()">click me</button> -->
     </div>
     <div *ngIf="step == 5">
       <button (click)="post()">Submit</button>
@@ -180,4 +179,7 @@
     <pre>{{ multiForm.value | json }}</pre>
     <pre>{{ skillsForm.value | json }}</pre>
   </form>
+  <div class="text-container">
+    <app-form-description [item]="currentStep"></app-form-description>
+  </div>
 </div>

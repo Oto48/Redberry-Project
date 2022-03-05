@@ -1,0 +1,42 @@
+.main-container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+.tb-10 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.k-stepper {
+  pointer-events: none;
+}
+
+::ng-deep .k-step-list-horizontal ~ .k-progressbar {
+  display: none;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+::ng-deep .k-stepper .k-step-indicator-text {
+  display: none;
+}
+
+::ng-deep .k-stepper .k-step-indicator {
+  background-color: white;
+  border: 3px solid red;
+  margin-right: 50px;
+}
+
+::ng-deep .k-stepper .k-step-current .k-step-indicator {
+  border: 3px solid red;
+}
+
+.submit {
+  background-color: red;
+  width: 100%;
+  height: 100%;
+}

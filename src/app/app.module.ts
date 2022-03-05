@@ -8,9 +8,10 @@ import { FormComponent } from './components/form/form.component';
 import { LayoutModule } from '@progress/kendo-angular-layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
+import { FormDescriptionComponent } from './components/form/form-description/form-description.component';
 
 @NgModule({
-  declarations: [AppComponent, FormComponent],
+  declarations: [AppComponent, FormComponent, FormDescriptionComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
