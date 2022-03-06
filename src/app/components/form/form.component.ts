@@ -28,7 +28,13 @@ export class FormComponent implements OnInit {
     first_name: new FormControl('', Validators.required),
     last_name: new FormControl('', Validators.required),
     email: new FormControl('', Validators.required),
-    phone: new FormControl('', Validators.required),
+    phone: new FormControl(''),
+    // phone: new FormControl('', [
+    //   Validators.required,
+    //   Validators.pattern(
+    //     '(([+][(]?[0-9]{1,3}[)]?)|([(]?[0-9]{4}[)]?))s*[)]?[-s.]?[(]?[0-9]{1,3}[)]?([-s.]?[0-9]{3})([-s.]?[0-9]{3,4})'
+    //   ),
+    // ]),
     skills: new FormArray([], Validators.required),
     work_preference: new FormControl('', Validators.required),
     had_covid: new FormControl('', Validators.required),
@@ -126,7 +132,24 @@ export class FormComponent implements OnInit {
     ) {
       return;
     }
-    (<FormArray>this.multiForm.get('skills')).push(this.addSkillFormGroup());
+    const id: number = this.skillsForm.value.id;
+    if (this.checkSkills(id)) {
+      (<FormArray>this.multiForm.get('skills')).push(this.addSkillFormGroup());
+    }
+  }
+
+  checkSkills(id: number) {
+    const skills = this.multiForm.get('skills') as FormArray;
+    for (let skill of skills.value) {
+      if (skill.id === id) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  removeSkill(index: number) {
+    (<FormArray>this.multiForm.get('skills')).removeAt(index);
   }
 
   addCovidDate() {

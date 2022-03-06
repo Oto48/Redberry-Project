@@ -54,6 +54,12 @@
           formControlName="phone"
           id="phone"
           placeholder="phone"
+          [ngClass]="{
+            error:
+              (multiForm.get('phone')?.invalid &&
+                multiForm.get('phone')?.touched) ||
+              (multiForm.get('phone')?.invalid && clicked)
+          }"
         />
       </div>
     </div>
@@ -90,8 +96,9 @@
         />
       </div>
       <button (click)="addSkillButton()">add skill</button>
-      <div *ngFor="let skill of multiForm.value.skills">
+      <div *ngFor="let skill of multiForm.value.skills; let i = index">
         <p>{{ skill.id }}</p>
+        <button (click)="removeSkill(i)">remove skill</button>
       </div>
     </div>
 
