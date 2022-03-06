@@ -23,44 +23,24 @@ export class FormComponent implements OnInit {
   steps = [{}, {}, {}, {}, {}];
   step: number = 1;
   skills: any;
-  testData = {
-    token: '287c76fe-7c10-4706-92ef-cd6618db20d9',
-    first_name: 'gela',
-    last_name: 'gelashvili',
-    email: 'gelashvili@gela.ge',
-    phone: '+995591933382',
-    skills: [
-      {
-        id: 1,
-        experience: 3,
-      },
-    ],
-    work_preference: 'from_home',
-    had_covid: true,
-    had_covid_at: '2022-02-23',
-    vaccinated: true,
-    vaccinated_at: '2022-02-23',
-    will_organize_devtalk: true,
-    devtalk_topic: 'I would ...',
-    something_special: 'I am special!',
-  };
+  clicked: boolean = false;
   multiForm = new FormGroup({
     first_name: new FormControl('', Validators.required),
-    last_name: new FormControl(''),
-    email: new FormControl(''),
-    phone: new FormControl(''),
-    skills: new FormArray([]),
-    work_preference: new FormControl(''),
-    had_covid: new FormControl(''),
-    vaccinated: new FormControl(''),
-    will_organize_devtalk: new FormControl(''),
-    devtalk_topic: new FormControl(''),
-    something_special: new FormControl(''),
+    last_name: new FormControl('', Validators.required),
+    email: new FormControl('', Validators.required),
+    phone: new FormControl('', Validators.required),
+    skills: new FormArray([], Validators.required),
+    work_preference: new FormControl('', Validators.required),
+    had_covid: new FormControl('', Validators.required),
+    vaccinated: new FormControl('', Validators.required),
+    will_organize_devtalk: new FormControl('', Validators.required),
+    devtalk_topic: new FormControl('', Validators.required),
+    something_special: new FormControl('', Validators.required),
   });
 
   skillsForm = new FormGroup({
-    id: new FormControl(),
-    experience: new FormControl(),
+    id: new FormControl('', Validators.required),
+    experience: new FormControl('', Validators.required),
   });
 
   constructor(
@@ -88,8 +68,33 @@ export class FormComponent implements OnInit {
     }
   }
   next() {
+    this.clicked = true;
+    if (
+      (this.multiForm.get('first_name')?.invalid ||
+        this.multiForm.get('last_name')?.invalid ||
+        this.multiForm.get('email')?.invalid) &&
+      this.step == 1
+    ) {
+      return;
+    }
+    if (this.multiForm.get('skills')?.invalid && this.step == 2) {
+      return;
+    }
+    if (
+      (this.multiForm.get('work_preference')?.invalid ||
+        this.multiForm.get('had_covid:')?.invalid ||
+        this.multiForm.get('vaccinated')?.invalid) &&
+      this.step == 3
+    ) {
+      return;
+    }
     this.currentStep += 1;
     this.step = this.step + 1;
+    this.clicked = false;
+
+    // will_organize_devtalk: new FormControl('', Validators.required),
+    // devtalk_topic: new FormControl('', Validators.required),
+    // something_special: new FormControl('', Validators.required),
   }
 
   post() {
@@ -97,7 +102,6 @@ export class FormComponent implements OnInit {
     data.token = '287c76fe-7c10-4706-92ef-cd6618db20d9';
     this.guard.setEnterStatus(true);
     console.log(data);
-    console.log(this.testData);
     this.api.postApplications(data).subscribe(
       (data) => {
         console.log(data);
@@ -116,6 +120,12 @@ export class FormComponent implements OnInit {
   }
 
   addSkillButton() {
+    if (
+      this.skillsForm.get('id')?.invalid ||
+      this.skillsForm.get('experience')?.invalid
+    ) {
+      return;
+    }
     (<FormArray>this.multiForm.get('skills')).push(this.addSkillFormGroup());
   }
 
